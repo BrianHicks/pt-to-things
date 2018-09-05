@@ -83,7 +83,7 @@ class Story:
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(__file__)
+    parser = argparse.ArgumentParser('pt-to-things')
     parser.add_argument('--token', default=os.environ.get('PT_TOKEN'))
     parser.add_argument('story')
     args = parser.parse_args()
