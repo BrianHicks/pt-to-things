@@ -8,7 +8,7 @@ in pkgs.stdenv.mkDerivation {
 
   installPhase = ''
     mkdir -p $out/{bin,share/pt-to-things}
-    cp -r * $out/share/pt-to-things/
+    cp -r pt-to-things.py README.md LICENSE $out/share/pt-to-things/
 
     bin=$out/bin/pt-to-things
     echo "#!/bin/sh -e" > $bin
