@@ -85,7 +85,6 @@ class Story:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(__file__)
     parser.add_argument('--token', default=os.environ.get('PT_TOKEN'))
-    parser.add_argument('--area')
     parser.add_argument('story')
     args = parser.parse_args()
 
@@ -93,7 +92,4 @@ if __name__ == '__main__':
     story = client.story(args.story.strip('#'))
 
     project = story.things_project()
-    if args.area:
-        project['area'] = args.area
-
     print('things:///json?reveal=true&data=%s' % quote(json.dumps([project])))
