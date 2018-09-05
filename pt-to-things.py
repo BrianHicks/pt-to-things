@@ -2,9 +2,10 @@
 from __future__ import print_function, unicode_literals
 import argparse
 import json
-import urllib.request as request
-from pprint import pprint
 import os
+from pprint import pprint
+from urllib.parse import quote
+import urllib.request as request
 
 
 class Client:
@@ -54,15 +55,45 @@ class Story:
 
         return self.__tasks
 
+    def things_project(self):
+        project = {
+            'type': 'project',
+            'operation': 'create',
+            'attributes': {
+                'title': self.body['name'],
+                'creation-date': self.body['created_at'],
+                'notes': self.body.get('description', 'no description set in PT!') + '\n\n' + self.body['url'],
+            }
+        }
+
+        if self.tasks:
+            project['attributes']['items'] = [self.__things_task_body(task) for task in self.tasks]
+
+        return project
+
+    def __things_task_body(self, task):
+        return {
+            'type': 'to-do',
+            'attributes': {
+                'title': task['description'],
+                'completed': task['complete'],
+                'creation-date': task['created_at'],
+            }
+        }
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(__file__)
     parser.add_argument('--token', default=os.environ.get('PT_TOKEN'))
+    parser.add_argument('--area')
     parser.add_argument('story')
     args = parser.parse_args()
 
     client = Client(args.token)
     story = client.story(args.story.strip('#'))
 
-    pprint(story.body)
-    pprint(story.tasks)
+    project = story.things_project()
+    if args.area:
+        project['area'] = args.area
+
+    print('things:///json?reveal=true&data=%s' % quote(json.dumps([project])))
