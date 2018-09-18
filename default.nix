@@ -12,7 +12,7 @@ in pkgs.stdenv.mkDerivation {
 
     bin=$out/bin/pt-to-things
     echo "#!/bin/sh -e" > $bin
-    echo "exec ${pkgs.python35}/bin/python $out/share/pt-to-things/pt-to-things.py --token ${token} \"\$@\"" >> $bin
+    echo "exec ${pkgs.python36}/bin/python $out/share/pt-to-things/pt-to-things.py --token ${token} \"\$@\"" >> $bin
     chmod +x $bin
   '';
 }

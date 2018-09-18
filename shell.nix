@@ -4,6 +4,6 @@ stdenv.mkDerivation {
   name = "teambot";
   buildInputs = [
     git
-    python3
+    python36
   ];
 }
